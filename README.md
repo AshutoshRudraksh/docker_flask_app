@@ -10,7 +10,6 @@ A simple Flask application containerized using Docker.
 ## Project Structure
 
 │
-
 ├── app.py # Flask application
 ├── Dockerfile # Docker configuration
 └── README.md # This file
