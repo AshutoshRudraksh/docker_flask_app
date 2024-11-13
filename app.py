@@ -21,10 +21,25 @@ class User(Base):
 	email = Column(String)
 	message = Column(String)
 
+# create forum post model
+class ForumPost(Base):
+	__tablename__ = 'forum_posts'
+	id = Column(Integer, primary_key=True)
+	user_id = Column(Integer, nullable=False)
+	message = Column(String, nullable=False)
+	
 # Create the table in the database
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
+
+
+	
+
+# # Create the table in the database
+# Base.metadata.create_all(engine)
+# Session = sessionmaker(bind=engine)
+# session = Session()
 
 # Create a connection to the SQLite database
 # def init_db():
@@ -58,6 +73,54 @@ def greet(name):
 	# 	conn.execute('INSERT INTO users (name, email, message) VALUES (?, ?, ?)', (name, email, message))
 	# 	conn.commit()
 	# return jsonify({"name":name, "email": email, "message": message})
+
+# Post a message to the forun
+@app.route('/forum/post', methods=['POST'])
+def post_message():
+	user_id = request.json.get('user_id')
+	message = request.json.get('message')
+	if not user_id or not message:
+		return jsonify({"error": "User ID and message are required"}), 400
+	new_post = ForumPost(user_id = user_id, message = message)
+	session.add(new_post)
+	session.commit()
+	return jsonify({"message": "Post created successfully!"})
+
+# route to view all the post
+@app.route('/forum/messages', methods=["GET"])
+def view_messages():
+	posts = session.query(ForumPost).all()
+	return jsonify([{"id": post.id,	"user_id": post.user_id, "message": post.message} for post in posts])
+							
+
+# Update User
+@app.route('/users/update/<int:user_id>', methods=['PUT'])
+def update_user(user_id):
+	user = session.query(User).filter_by(id=user_id).first()
+	if not user:
+		return jsonify({"error": "User not found"}), 404
+	
+	name = request.json.get('name')
+	email = request.json.get('email')
+	if name:
+		user.name = name
+	if email:
+		user.email = email
+	session.commit()
+	return jsonify({"message": "User updated successfully!"})	
+
+
+#Delete a user and their forum posts
+@app.route('/users/delete/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+	user = session.query(User).filter_by(id = user_id).first()
+	if not user:
+		return jsonify({"error": "User not found"}), 404
+	session._query(ForumPost).filter_by(user_id=user_id).delete()
+	session.delete(User)
+	session.commit()
+	return jsonify({"message": "User and associated posts deleted successfully!"})
+
 
 # Route to list all users
 @app.route('/users', methods=['GET'])
