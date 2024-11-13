@@ -14,7 +14,7 @@ WORKDIR  /app
 COPY . /app
 
 ## INstall Falsk in the container
-RUN  pip install flask
+RUN  pip install flask sqlalchemy psycopg2-binary 
 
 #The port that this container should listen on.
 #Define network ports for this container to listen on at runtime.
