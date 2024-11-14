@@ -34,8 +34,6 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 
-	
-
 # # Create the table in the database
 # Base.metadata.create_all(engine)
 # Session = sessionmaker(bind=engine)

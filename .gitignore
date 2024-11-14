@@ -1,9 +1,36 @@
-# Python
+# Docker specific
+.docker/
+docker-compose.override.yml
+*.env
+.dockerignore
+
+# Flask specific
+instance/
+.webassets-cache/
+flask_session/
+.flaskenv
+
+# Application runtime
+tmp/
+uploads/
+media/
+static/collected/
+
+# System and IDE
+*.swp
+*.swo
+.DS_Store
+.idea/
+.vscode/
+
+# Python and dependencies
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+venv/
+.venv/
 env/
 build/
 develop-eggs/
@@ -20,37 +47,20 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-.venv/
-venv/
-.env
 
-# IDE specific files
-.idea/
-.vscode/
-*.swp
-*.swo
-.DS_Store
-
-# PostgreSQL
+# Database
 *.sql
 *.sqlite
 *.sqlite3
 *.db
 
-# Docker
-.docker/
-docker-compose.override.yml
-
-# Logs
+# Logs and debugging
 *.log
 logs/
 log/
+debug.log
 
-# Local development settings
-instance/
-.webassets-cache/
-
-# Coverage reports
+# Test coverage
 htmlcov/
 .tox/
 .coverage
