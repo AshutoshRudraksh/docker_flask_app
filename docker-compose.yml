@@ -1,0 +1,34 @@
+version: '3.9'
+services:
+  app:
+    build: .
+    ports:
+      - "5001:5001"
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/app_db
+    depends_on:
+      - db
+
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: app_db
+    volumes:
+      - db-data:/var/lib/postgresql/data
+volumes:
+  db-data:
+
+# # Commands to Build/rebuild images and immediately start containers
+# # Just build/rebuild the images
+# $docker compose build
+
+# # Start containers with existing images
+# docker compose up
+
+# # Build/rebuild images and immediately start containers
+# $docker compose up --build
+
+# # Build/rebuild images and immediately start containers in detached mode
+# $docker compose up --build -d
