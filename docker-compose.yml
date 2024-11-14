@@ -1,10 +1,35 @@
-version: '3.9'
+# services:
+#   app:
+#     build: .
+#     ports:
+#       - "5001:5001"
+#     environment:
+#       - DATABASE_URL=postgresql://user:password@db:5432/app_db
+#     depends_on:
+#       - db
+#     entrypoint: ["./wait-for-it.sh", "db:5432", "--", "python", "app.py"]
+
+#   db:
+#     image: postgres:14
+#     environment:
+#       POSTGRES_USER: user
+#       POSTGRES_PASSWORD: password
+#       POSTGRES_DB: app_db
+#     volumes:
+#       - db-data:/var/lib/postgresql/data
+
+# volumes:
+#   db-data:
+
+
+#version: '3.9'
 services:
   app:
     build: .
     ports:
       - "5001:5001"
     environment:
+      - FLASK_ENV=development
       - DATABASE_URL=postgresql://user:password@db:5432/app_db
     depends_on:
       - db

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Forum</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+	</head>	
+	<body>
+		<div id="app">
+			<!-- Login-form-->
+			 <div id="login-form">
+				<h2>Login</h2>
+				<input type="text" id="login-username" placeholder="Username">
+				<input type="password" id="login-password" placeholder="Password">
+				<button id="login-button" onclick="login()">Login</button>
+				<p> Don't have an account? <a href="#" onclick="showSignup()">Sign up</a></p>
+			</div>
+			<!-- Signup-form-->
+			 <div id="signup-form" style="display: none;">
+				<h2>Sign up</h2>
+				<input type="text" id="signup-username" placeholder="Username">
+				<input type="password" id="signup-password" placeholder="Password">
+				<button id="signup-button" onclick="signup()">Sign up</button>
+				<p> Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+			 </div>
+
+			 <!-- Forum section -->
+			  <div id="forum" style="display: none;">
+				<h2>Forum</h2>
+				<div id="posts"></div>
+				<textarea id="post-input" placeholder="What's on your mind?"></textarea>
+				<button id="post-button" onclick="postMessage()">Post</button>
+				<button id="logout-button" onclick="logout()">Logout</button>
+			</div>
+		</div>
+		<script src="{{ url_for('static', filename='js/script.js')}}"></script>
+
+	</body>
+</html>

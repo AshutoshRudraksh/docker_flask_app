@@ -24,3 +24,5 @@ EXPOSE 5001
 # Run app.py when the container launches
 CMD ["python", "app.py"]
 
+COPY wait-for-it.sh /app/wait-for-it.sh
+RUN chmod +x /app/wait-for-it.sh

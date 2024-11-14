@@ -16,7 +16,10 @@ Base = declarative_base()
 # Define a User model
 class User(Base):
 	__tablename__ = "users"
+	
 	id = Column(Integer, primary_key=True)
+	username = Column(String, unique=True, nullable=False)
+	password = Column(String, nullable=False)
 	name = Column(String)
 	email = Column(String)
 	message = Column(String)
@@ -29,6 +32,7 @@ class ForumPost(Base):
 	message = Column(String, nullable=False)
 	
 # Create the table in the database
+
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -75,14 +79,28 @@ def greet(name):
 # Post a message to the forun
 @app.route('/forum/post', methods=['POST'])
 def post_message():
-	user_id = request.json.get('user_id')
-	message = request.json.get('message')
-	if not user_id or not message:
-		return jsonify({"error": "User ID and message are required"}), 400
-	new_post = ForumPost(user_id = user_id, message = message)
-	session.add(new_post)
-	session.commit()
-	return jsonify({"message": "Post created successfully!"})
+	try:
+		user_id = request.json.get('user_id')
+		message = request.json.get('message')
+		if not user_id or not message:
+			return jsonify({"error": "User ID and message are required"}), 400
+		#enforce that the length of the message is less than 250 characters
+		if len(message) < 5 or len(message)>500:
+			return jsonify({"error": "Message must be between 5 and 500 characters"}), 400
+		
+		# check for duplicates in existing posts
+		existing_post = session.query(ForumPost).filter_by(user_id=user_id, message=message).first()
+		if existing_post: 
+			return jsonify({"error": "Post already exists, Duplicate post not allowed"}), 400
+			
+		# add the post forum 
+		new_post = ForumPost(user_id = user_id, message = message)
+		session.add(new_post)
+		session.commit()
+		return jsonify({"message": "Post created successfully!"})
+		
+	except Exception as e:
+		return jsonify({"error": str(e)}), 500
 
 # route to view all the post
 @app.route('/forum/messages', methods=["GET"])
@@ -133,7 +151,59 @@ def list_users():
 	# 	users = [{"id": row[0], "name": row[1], "email": row[2], "message": row[3]} for row in cursor.fetchall()]
 	# return jsonify(users)
 
+#signup route
+@app.route('/signup', methods=['GET','POST'])
+def signup():
+	data = request.json
+	username = data.get('username')
+	password = data.get('password')
+
+	#validate the username and password
+	if not username or not password:
+		return jsonify({"success": False, "message": "Username and password are required"}), 400
+	
+	#check if the username already exists
+	existing_user = session.query(User).filter_by(username=username).first()
+	if existing_user:
+		return jsonify({"success": False, "message": "Username already exists"}), 400
+
+	#create a new user
+	new_user = User(username=username, password=password)
+	session.add(new_user)
+	session.commit()
+	return jsonify({"success": True, "message": "User created successfully!"})
+
+# Login route
+@app.route('/login', methods=['POST'])
+def login():
+	data = request.json
+	username = data.get('username')
+	password = data.get('password')
+
+	#validate the username and password
+	if not username or not password:
+		return jsonify({"success": False, "message": "Username and password are required"}), 400
+	
+	#check if the username already exists
+	user = session.query(User).filter_by(username=username).first()
+	if not user:
+		return jsonify({"success": False, "message": "Invalid username or password"}), 401
+	
+	#check if the password is correct
+	if user.password != password:
+		return jsonify({"success": False, "message": "Invalid username or password"}), 401
+
+	#login successful
+	return jsonify({"success": True, "message": "Login successful!"})
+
+
+# logout route
+@app.route('/logout', methods=['POST'])
+def logout():
+	return jsonify({"success": True, "message": "Logout successful!"})
+
 # Route to get a user by ID
 if __name__ == "__main__":
-	app.run(host='0.0.0.0', port=5001)
+
+	app.run(debug=True, host='0.0.0.0', port=5001)
 

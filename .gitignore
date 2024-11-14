@@ -1,33 +1,12 @@
-# Docker specific
-.docker/
-docker-compose.override.yml
-*.env
-.dockerignore
-
-# Flask specific
-instance/
-.webassets-cache/
-flask_session/
-.flaskenv
-
-# Application runtime
-tmp/
-uploads/
-media/
-static/collected/
-
-# System and IDE
-*.swp
-*.swo
-.DS_Store
-.idea/
-.vscode/
-
-# Python and dependencies
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
+# C extensions
 *.so
+
+# Distribution / packaging
 .Python
 venv/
 .venv/
@@ -44,28 +23,91 @@ parts/
 sdist/
 var/
 wheels/
+share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
 
-# Database
-*.sql
-*.sqlite
-*.sqlite3
-*.db
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
 
-# Logs and debugging
-*.log
-logs/
-log/
-debug.log
-
-# Test coverage
+# Unit test / coverage reports
 htmlcov/
 .tox/
+.nox/
 .coverage
 .coverage.*
 .cache
 nosetests.xml
 coverage.xml
 *.cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Flask-specific files
+instance/
+.webassets-cache
+
+# Scrapy stuff
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+
+# PyCharm
+.idea/
+
+# SQLite database files
+*.db
+*.sqlite
+*.sqlite3
+
+# VS Code workspace settings
+*.code-workspace
+
+# macOS specific files
+.DS_Store
