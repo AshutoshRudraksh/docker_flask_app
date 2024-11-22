@@ -1,5 +1,5 @@
 #app.py
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import sessionmaker, declarative_base
 import sqlite3
@@ -57,8 +57,9 @@ session = Session()
 
 #Route to greet a user by name.
 @app.route('/')
-def home():
-	return "Hello, Docker!"
+def index():
+    return render_template('index.html')
+
 
 # Route to greet a user by name.
 @app.route('/greet/<name>', methods=['GET'])
