@@ -8,11 +8,9 @@ A simple Flask application containerized using Docker.
 - Python 3.8 or higher (if running locally)
 
 ## Project Structure
-
-│
-├── app.py # Flask application
-├── Dockerfile # Docker configuration
-└── README.md # This file
+- app.py # Flask application
+-  Dockerfile # Docker configuration
+-   README.md # This file
 
 
 ## Getting Started
